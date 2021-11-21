@@ -33,71 +33,71 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module board_level_data_physical_decoder(
-		input clk,
-		input rst,
-		input[7:0] raw_data,
-		input raw_data_valid,
-		output reg frame_start,
-		output reg frame_end,
-		output reg[5:0] decoded_data,
-		output reg decoded_data_valid
-	);
+        input clk,
+        input rst,
+        input[7:0] raw_data,
+        input raw_data_valid,
+        output reg frame_start,
+        output reg frame_end,
+        output reg[5:0] decoded_data,
+        output reg decoded_data_valid
+    );
 
-	always @(posedge clk) begin
-		if(rst) begin
-			frame_start <= 1'b0;
-		end
-		else if(!raw_data_valid) begin
-			frame_start <= 1'b0;
-		end
-		else if(raw_data == 8'b00000001) begin
-			frame_start <= 1'b1;
-		end
-		else begin
-			frame_start <= 1'b0;
-		end
-	end
+    always @(posedge clk) begin
+        if(rst) begin
+            frame_start <= 1'b0;
+        end
+        else if(!raw_data_valid) begin
+            frame_start <= 1'b0;
+        end
+        else if(raw_data == 8'b00000001) begin
+            frame_start <= 1'b1;
+        end
+        else begin
+            frame_start <= 1'b0;
+        end
+    end
 
-	always @(posedge clk) begin
-		if(rst) begin
-			frame_end <= 1'b0;
-		end
-		else if(!raw_data_valid) begin
-			frame_end <= 1'b0;
-		end
-		else if(raw_data == 8'b00000010) begin
-			frame_end <= 1'b1;
-		end
-		else begin
-			frame_end <= 1'b0;
-		end
-	end
+    always @(posedge clk) begin
+        if(rst) begin
+            frame_end <= 1'b0;
+        end
+        else if(!raw_data_valid) begin
+            frame_end <= 1'b0;
+        end
+        else if(raw_data == 8'b00000010) begin
+            frame_end <= 1'b1;
+        end
+        else begin
+            frame_end <= 1'b0;
+        end
+    end
 
-	always @(posedge clk) begin
-		if(rst) begin
-			decoded_data <= 6'b0;
-		end
-		else if(!raw_data_valid) begin
-			decoded_data <= 6'b0;
-		end
-		else begin
-			decoded_data <= raw_data[7:2];
-		end
-	end
+    always @(posedge clk) begin
+        if(rst) begin
+            decoded_data <= 6'b0;
+        end
+        else if(!raw_data_valid) begin
+            decoded_data <= 6'b0;
+        end
+        else begin
+            decoded_data <= raw_data[7:2];
+        end
+    end
 
-	always @(posedge clk) begin
-		if(rst) begin
-			decoded_data_valid <= 1'b0;
-		end
-		else if(!raw_data_valid) begin
-			decoded_data_valid <= 1'b0;
-		end
-		else if(raw_data == 8'b0) begin
-			decoded_data_valid <= 1'b0;
-		end
-		else begin
-			decoded_data_valid <= raw_data_valid;
-		end
-	end
+    always @(posedge clk) begin
+        if(rst) begin
+            decoded_data_valid <= 1'b0;
+        end
+        else if(!raw_data_valid) begin
+            decoded_data_valid <= 1'b0;
+        end
+        else if(raw_data == 8'b0) begin
+            decoded_data_valid <= 1'b0;
+        end
+        else begin
+            decoded_data_valid <= raw_data_valid;
+        end
+    end
 
 endmodule // board_level_data_physical_decoder

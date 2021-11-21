@@ -29,28 +29,28 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module board_level_data_block_transmitter #(
-		parameter BYTE_N = 8
-	)(
-		input clk,
-		input rst,
-		input send_clk,
-		output serial_data,
-		input [BYTE_N * 8 - 1:0] data,
-		input we,
-		output ready
-	);
+        parameter BYTE_N = 8
+    )(
+        input clk,
+        input rst,
+        input send_clk,
+        output serial_data,
+        input [BYTE_N * 8 - 1:0] data,
+        input we,
+        output ready
+    );
 
-	`include "clog2.vh"
+    `include "clog2.vh"
 
-	localparam DATA_WIDTH = BYTE_N * 8;
-	localparam CNT_BIT_WIDTH = clog2(BYTE_N);
+    localparam DATA_WIDTH = BYTE_N * 8;
+    localparam CNT_BIT_WIDTH = clog2(BYTE_N);
 
     localparam SENDSTATE_INIT = 2'b00; 
     localparam SENDSTATE_SEND = 2'b01;
     localparam SENDSTATE_FINISH = 2'b10;
 
     //signals from and to board_level_data_transmitter
-	reg send_frame_start;
+    reg send_frame_start;
     reg send_frame_end;
     reg [7:0] send_data;
     wire send_busy;
@@ -121,39 +121,39 @@ module board_level_data_block_transmitter #(
             cur_send_cnt <= {CNT_BIT_WIDTH{1'b0}};
         end
         else if((cur_sendstate == SENDSTATE_SEND) && (!send_busy)) begin
-        	cur_send_cnt <= next_send_cnt;
+            cur_send_cnt <= next_send_cnt;
         end
     end
     //--------------------------------------------------------------------------
 
     //---------------------------Send Signal Generate---------------------------
     always @(posedge clk) begin
-    	if(rst) begin
-    		stored_data <= {DATA_WIDTH{1'b0}};
-    	end
-    	else if(cur_sendstate == SENDSTATE_INIT) begin
-    		stored_data <= data;
-    	end
-    	else if((cur_sendstate == SENDSTATE_SEND) && (!send_busy)) begin
-    		stored_data <= stored_data >> 8;
-    	end
+        if(rst) begin
+            stored_data <= {DATA_WIDTH{1'b0}};
+        end
+        else if(cur_sendstate == SENDSTATE_INIT) begin
+            stored_data <= data;
+        end
+        else if((cur_sendstate == SENDSTATE_SEND) && (!send_busy)) begin
+            stored_data <= stored_data >> 8;
+        end
     end
 
     always @(*) begin
         case(cur_sendstate)
             SENDSTATE_INIT: begin
-            	if(next_sendstate == SENDSTATE_SEND) begin
-	                send_frame_start = 1'b1;
-	                send_frame_end = 1'b0;
-	                send_data = 8'b0;
-	                send_we = 1'b1;
-	            end
-	            else begin
-	            	send_frame_start = 1'b0;
-	            	send_frame_end = 1'b0;
-	            	send_data = 8'b0;
-	            	send_we = 1'b0;
-	            end
+                if(next_sendstate == SENDSTATE_SEND) begin
+                    send_frame_start = 1'b1;
+                    send_frame_end = 1'b0;
+                    send_data = 8'b0;
+                    send_we = 1'b1;
+                end
+                else begin
+                    send_frame_start = 1'b0;
+                    send_frame_end = 1'b0;
+                    send_data = 8'b0;
+                    send_we = 1'b0;
+                end
             end
 
             SENDSTATE_SEND: begin

@@ -14,9 +14,10 @@
 //
 //
 // Inputs:
-//       value - function argument.
+// value - function argument.
 //
-// Result: the least bits that can indicates 0..(value - 1).
+// Result:
+// the least bits that can indicates 0..(value - 1).
 ////////////////////////////////////////////////////////////////////////////////
 
 function[31:0] clog2; 
@@ -24,13 +25,13 @@ function[31:0] clog2;
     integer i; 
     reg [31:0] j; 
     begin 
-	    j = value - 1; 
-	    clog2 = 0; 
+        j = value - 1; 
+        clog2 = 0; 
 
-	    for (i = 0;i < 31;i = i + 1) begin
-	    	if(j[i]) begin
-	    		clog2 = i + 1;
-	    	end 
-	    end
-	end 
+        for (i = 0;i < 31;i = i + 1) begin
+            if(j[i]) begin
+                clog2 = i + 1;
+            end 
+        end
+    end 
 endfunction 

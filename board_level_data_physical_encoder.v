@@ -35,19 +35,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module board_level_data_physical_encoder(
-		input clk,
-		input rst,
-		input empty,
-		output rd,
-		input valid,
-		input frame_start,
-		input frame_end,
-		input [5:0] raw_data,
-		output reg [7:0] encoded_data,
-		input full
-	);
+        input clk,
+        input rst,
+        input empty,
+        output rd,
+        input valid,
+        input frame_start,
+        input frame_end,
+        input [5:0] raw_data,
+        output reg [7:0] encoded_data,
+        input full
+    );
 
-	reg [7:0] last_encoded_data;
+    reg [7:0] last_encoded_data;
     reg last_full;
 
     assign rd = ~full;
@@ -84,5 +84,5 @@ module board_level_data_physical_encoder(
             encoded_data = {raw_data, 2'b11};
         end
     end
-	
+    
 endmodule // board_level_data_physical_encoder
