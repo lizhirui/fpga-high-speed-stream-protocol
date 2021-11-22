@@ -4,7 +4,7 @@
 
 This stream transmittion protocol is used for data transmission between some fpgas.
 
-The top module is board_level_data_block_transmitter and board_level_data_block_receiver.
+The top modules are board_level_data_block_transmitter and board_level_data_block_receiver.
 
 In physical level(board_level_transmitter_physical and board_level_receiver_physical module), data is transmitted in a source-synchronous bit stream channel.
 
