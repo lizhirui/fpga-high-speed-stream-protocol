@@ -38,24 +38,24 @@ In Spartan6:
 
 ```verilog
 ODDR2 #(
-    .DDR_ALIGNMENT("NONE"),
+    .DDR_ALIGNMENT("C0"),
     .INIT(1'b0),
-    .SRTYPE("SYNC")
+    .SRTYPE("ASYNC")
 )ODDR2_send_clk(
     .Q(oddr2_send_clk),
     .C0(send_clk),
     .C1(~send_clk),
     .CE(1'b1),
-    .D0(1'b1),
-    .D1(1'b0),
+    .D0(1'b0),
+    .D1(1'b1),
     .R(1'b0),
     .S(1'b0)
 );
 
 ODDR2 #(
-    .DDR_ALIGNMENT("NONE"),
+    .DDR_ALIGNMENT("C0"),
     .INIT(1'b0),
-    .SRTYPE("SYNC")
+    .SRTYPE("ASYNC")
 )ODDR2_serial_data(
     .Q(oddr2_send_serial_data),
     .C0(send_clk),
@@ -72,21 +72,21 @@ In Kintex7:
 
 ```verilog
 ODDR #(
-    .DDR_CLK_EDGE("OPPOSITE_EDGE"),
+    .DDR_CLK_EDGE("SAME_EDGE"),
     .INIT(1'b0),
     .SRTYPE("SYNC")
 )ODDR_send_clk(
     .Q(oddr_send_clk),
     .C(send_clk),
     .CE(1'b1),
-    .D1(1'b1),
-    .D2(1'b0),
+    .D1(1'b0),
+    .D2(1'b1),
     .R(1'b0),
     .S(1'b0)
 );
 
 ODDR #(
-    .DDR_CLK_EDGE("OPPOSITE_EDGE"),
+    .DDR_CLK_EDGE("SAME_EDGE"),
     .INIT(1'b0),
     .SRTYPE("SYNC")
 )ODDR_serial_data(
@@ -99,6 +99,8 @@ ODDR #(
     .S(1'b0)
 );
 ```
+
+You must use "C0" (for Spartan6) and "SAME_EDGE" (for Kintex7) when use this protocol between Spartan6 and Kintex 7(or just a "fast" and a "slow" fpga) because setup and hold time requirements are better for Kintex 7 than Spartan6, otherwise, channel signals that meet requirements of Kintex 7 may not meet requirements of Spartan6 to increase error rate.
 
 You must use clock-dedicated port of fpga in receiver and don't want to contraint it as a normal clock signal.
 
